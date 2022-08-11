@@ -4,12 +4,10 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static javax.persistence.GenerationType.AUTO;
-
 @Entity
 public class User{
     @Id
-    @GeneratedValue(strategy = AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String userName;

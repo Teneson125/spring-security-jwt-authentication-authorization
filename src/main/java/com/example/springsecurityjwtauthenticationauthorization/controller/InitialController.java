@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.PostConstruct;
+
 
 @RestController
 public class InitialController {
@@ -12,17 +14,12 @@ public class InitialController {
     @Autowired
     private InitialService initialService;
 
-    @GetMapping("init_user")
+    @PostConstruct
     public void initUser(){
         initialService.initUser();
-    }
-    @GetMapping("init_role")
-    public void initRole(){
         initialService.initRole();
-    }
-    @GetMapping("init_role_to_user")
-    public void initRoleToUser(){
         initialService.initRoleToUser();
     }
+
 
 }
