@@ -1,7 +1,11 @@
 package com.example.springsecurityjwtauthenticationauthorization.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 public class User{
@@ -15,20 +19,10 @@ public class User{
     private boolean accountNotExpired;
     private boolean credentialNotExpired;
     private boolean enabled;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Collection<Role> roles = new ArrayList<>();
 
     public User() {
-    }
-
-    public User(Long id, String name, String userName, String email, String password, boolean accountNotLocked, boolean accountNotExpired, boolean credentialNotExpired, boolean enabled) {
-        this.id = id;
-        this.name = name;
-        this.userName = userName;
-        this.email = email;
-        this.password = password;
-        this.accountNotLocked = accountNotLocked;
-        this.accountNotExpired = accountNotExpired;
-        this.credentialNotExpired = credentialNotExpired;
-        this.enabled = enabled;
     }
 
     public Long getId() {
@@ -101,6 +95,14 @@ public class User{
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
     }
 }
 
