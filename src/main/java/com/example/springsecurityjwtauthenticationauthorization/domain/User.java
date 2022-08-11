@@ -5,8 +5,9 @@ import javax.persistence.Id;
 
 @Entity
 public class User{
-    private String name;
     @Id
+    private Long id;
+    private String name;
     private String userName;
     private String email;
     private String password;
@@ -18,7 +19,8 @@ public class User{
     public User() {
     }
 
-    public User(String name, String userName, String email, String password, boolean accountNotLocked, boolean accountNotExpired, boolean credentialNotExpired, boolean enabled) {
+    public User(Long id, String name, String userName, String email, String password, boolean accountNotLocked, boolean accountNotExpired, boolean credentialNotExpired, boolean enabled) {
+        this.id = id;
         this.name = name;
         this.userName = userName;
         this.email = email;
@@ -27,6 +29,14 @@ public class User{
         this.accountNotExpired = accountNotExpired;
         this.credentialNotExpired = credentialNotExpired;
         this.enabled = enabled;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
