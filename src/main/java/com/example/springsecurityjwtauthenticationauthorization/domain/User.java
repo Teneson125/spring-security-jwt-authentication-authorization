@@ -1,15 +1,15 @@
 package com.example.springsecurityjwtauthenticationauthorization.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+
+import static javax.persistence.GenerationType.AUTO;
 
 @Entity
 public class User{
     @Id
+    @GeneratedValue(strategy = AUTO)
     private Long id;
     private String name;
     private String userName;
@@ -23,6 +23,18 @@ public class User{
     private Collection<Role> roles = new ArrayList<>();
 
     public User() {
+    }
+
+    public User(String name, String userName, String email, String password, boolean accountNotLocked, boolean accountNotExpired, boolean credentialNotExpired, boolean enabled, Collection<Role> roles) {
+        this.name = name;
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+        this.accountNotLocked = accountNotLocked;
+        this.accountNotExpired = accountNotExpired;
+        this.credentialNotExpired = credentialNotExpired;
+        this.enabled = enabled;
+        this.roles = roles;
     }
 
     public Long getId() {

@@ -32,6 +32,7 @@ public class UserServiceImp implements UserService{
         User user = userRepository.findByUserName(userName);
         Role role = roleRepository.findByName(roleName);
         user.getRoles().add(role);
+        userRepository.save(user);
     }
 
     @Override
