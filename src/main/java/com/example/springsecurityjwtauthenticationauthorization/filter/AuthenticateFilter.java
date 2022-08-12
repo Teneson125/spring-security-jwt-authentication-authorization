@@ -38,9 +38,8 @@ public class AuthenticateFilter {
 
     private HashMap<String, String> successfulAuthentication(User user) throws Exception {
 
-
         Algorithm algorithm = Algorithm.HMAC256("manojkanna");
-
+        Algorithm algorithm2 = Algorithm.HMAC256("kannamanoj");
         String accessToken = JWT.create()
                 .withSubject(user.getUserName())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 5))
@@ -54,7 +53,7 @@ public class AuthenticateFilter {
                 .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
                 .withClaim("roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
                 .withClaim("tokenName","refresh")
-                .sign(algorithm);
+                .sign(algorithm2);
 
 
         HashMap<String , String> token = new HashMap<>();

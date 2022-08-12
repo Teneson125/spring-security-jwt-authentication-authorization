@@ -24,15 +24,17 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-
 public class AuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-         if(request.getServletPath().startsWith("/api/")){
+        //if the servlet path is start with /api/ don't authorize, if not allow it for authorize
+        //for /api/home anyone can access so no need to authorize
+        // for /api/authenticate the user trying to log-in so no need to authorize
+        if(request.getServletPath().startsWith("/api/")){
              filterChain.doFilter(request,response);
          }else {
              String authorizationHeader = request.getHeader(AUTHORIZATION);
-
+             //checking the Authorization header is starting with Bearer and not null
              if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
                  try {
                      String accessToken = authorizationHeader.substring("Bearer ".length());
@@ -46,7 +48,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                      stream(roles).forEach(role-> {
                          authorities.add(new SimpleGrantedAuthority(role));
                      });
-
+                     //to check the role and authorize the person to access the api.
                      UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userName, null, authorities);
                      SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                      filterChain.doFilter(request,response);

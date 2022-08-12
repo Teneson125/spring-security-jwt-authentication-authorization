@@ -1,5 +1,6 @@
 package com.example.springsecurityjwtauthenticationauthorization.controller;
 
+import com.example.springsecurityjwtauthenticationauthorization.configuration.Token;
 import com.example.springsecurityjwtauthenticationauthorization.domain.Role;
 import com.example.springsecurityjwtauthenticationauthorization.domain.RoleToUser;
 import com.example.springsecurityjwtauthenticationauthorization.domain.User;
@@ -10,6 +11,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,7 +24,8 @@ public class UserController {
     private UserServiceImp userServiceImp;
     @Autowired
     private AuthenticateFilter authenticateFilter;
-
+    @Autowired
+    private Token token;
 
     @RequestMapping("/api/")
     @RestController
@@ -32,6 +37,10 @@ public class UserController {
         @PostMapping("authenticate")
         public HashMap<String, String> authenticate(@RequestParam String userName, @RequestParam String password) throws Exception {
             return authenticateFilter.authentication(userName, password);
+        }
+        @PostMapping("accessToken")
+        public HashMap<String, String> accessToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+            return token.accessToken(request,response);
         }
     }
 
@@ -70,7 +79,7 @@ public class UserController {
     class admin {
         @GetMapping("home")
         public String index(){
-            return "testing page";
+            return "admin page";
         }
         @GetMapping("users")
         public ResponseEntity<List<User>> getUsers(){
