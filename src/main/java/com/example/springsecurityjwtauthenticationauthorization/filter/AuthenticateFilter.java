@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
 @Configuration
@@ -22,21 +23,23 @@ public class AuthenticateFilter {
     private UserServiceImp userServiceImp;
 
 
-    public String authentication(String userName, String password) throws Exception {
+    public HashMap<String, String> authentication(String userName, String password) throws Exception {
         try {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userName, password);
             authenticationManager.authenticate(authenticationToken);
         }catch(Exception e){
-            return "user not found " + e;
+            HashMap<String, String> token = new HashMap<>();
+            token.put("error","Invalid credentials");
+            return token;
         }
 
         return successfulAuthentication(userServiceImp.getUser(userName));
     }
 
-    private String successfulAuthentication(User user) throws Exception {
+    private HashMap<String, String> successfulAuthentication(User user) throws Exception {
 
 
-        Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+        Algorithm algorithm = Algorithm.HMAC256("manojkanna");
 
         String accessToken = JWT.create()
                 .withSubject(user.getUserName())
@@ -53,7 +56,11 @@ public class AuthenticateFilter {
                 .withClaim("tokenName","refresh")
                 .sign(algorithm);
 
-        return accessToken;
 
+        HashMap<String , String> token = new HashMap<>();
+        token.put("accessToken",accessToken);
+        token.put("refreshToken",refreshToken);
+
+        return token;
     }
 }
