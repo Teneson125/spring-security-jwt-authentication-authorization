@@ -13,8 +13,6 @@ public class InitialService {
 
     @Autowired
     private UserServiceImp userServiceImp;
-    @Autowired
-    private UserRepository userRepository;
 
     public void initUser(){
         userServiceImp.saveUser(new User("manoj", "Teneson125", "kannamanoj2@gmail.com", "Manoj2@@@", true, true, true, true, new ArrayList<>()));

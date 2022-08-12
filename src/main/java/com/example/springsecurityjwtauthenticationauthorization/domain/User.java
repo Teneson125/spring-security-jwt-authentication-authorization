@@ -6,11 +6,9 @@ import java.util.Collection;
 
 @Entity
 public class User{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private String name;
     private String userName;
+    @Id
     private String email;
     private String password;
     private boolean accountNotLocked;
@@ -33,14 +31,6 @@ public class User{
         this.credentialNotExpired = credentialNotExpired;
         this.enabled = enabled;
         this.roles = roles;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
