@@ -3,13 +3,11 @@ package com.example.springsecurityjwtauthenticationauthorization.controller;
 import com.example.springsecurityjwtauthenticationauthorization.domain.Role;
 import com.example.springsecurityjwtauthenticationauthorization.domain.RoleToUser;
 import com.example.springsecurityjwtauthenticationauthorization.domain.User;
+import com.example.springsecurityjwtauthenticationauthorization.filter.AuthenticateFilter;
 import com.example.springsecurityjwtauthenticationauthorization.service.UserServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,6 +16,8 @@ public class UserController {
 
     @Autowired
     private UserServiceImp userServiceImp;
+    @Autowired
+    private AuthenticateFilter authenticateFilter;
 
     @GetMapping("users")
     public ResponseEntity<List<User>> getUsers(){
@@ -39,5 +39,9 @@ public class UserController {
     public ResponseEntity<?> addRoleToUser(@RequestBody RoleToUser roleToUser){
         userServiceImp.addRoleToUser(roleToUser.getUserName(),roleToUser.getRoleName());
         return ResponseEntity.ok().build();
+    }
+    @PostMapping("/authenticate")
+    public String authenticate(@RequestParam String userName, @RequestParam String password) throws Exception {
+        return authenticateFilter.authentication(userName, password);
     }
 }

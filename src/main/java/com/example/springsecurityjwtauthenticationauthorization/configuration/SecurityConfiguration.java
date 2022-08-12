@@ -1,6 +1,5 @@
 package com.example.springsecurityjwtauthenticationauthorization.configuration;
 
-import com.example.springsecurityjwtauthenticationauthorization.filter.CustomFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,12 +15,12 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration{
 
     @Bean
-    PasswordEncoder passwordEncoder(){
+    protected PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    protected AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
         return authenticationConfiguration.getAuthenticationManager();
     }
 
@@ -29,8 +28,9 @@ public class SecurityConfiguration{
     protected SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity)throws Exception{
         httpSecurity.csrf().disable();
         httpSecurity.authorizeRequests().anyRequest().permitAll();
-        httpSecurity.addFilter(new CustomFilter());
         return httpSecurity.build();
     }
+
+
 
 }
